@@ -24,6 +24,7 @@ jobs:
       - name: 記事生成
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
         run: python scripts/generate_post.py
 
       - name: GitにコミットしてPush
