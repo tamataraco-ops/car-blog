@@ -116,6 +116,7 @@ def save_post(content, topic):
 title: "{title}"
 date: {today}
 draft: false
+image: "{image_url}"
 ---
 """
     
