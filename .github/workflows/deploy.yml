@@ -28,7 +28,7 @@ jobs:
           extended: true
 
       - name: ビルド
-        run: hugo --minify
+        run: hugo --minify --baseURL "https://tamataraco-ops.github.io/car-blog/"
 
       - name: Pages アップロード
         uses: actions/upload-pages-artifact@v3
