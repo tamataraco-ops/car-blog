@@ -5,6 +5,7 @@ import json
 import random
 
 GEMINI_API_KEY = os.environ["GEMINI_API_KEY"]
+UNSPLASH_ACCESS_KEY = os.environ["UNSPLASH_ACCESS_KEY"]
 
 # 記事テーマリスト
 TOPICS = [
@@ -24,6 +25,24 @@ TOPICS = [
     "バックカメラの映りが悪い原因と改善方法",
     "車内でFire TV Stickを使う方法",
 ]
+
+def get_unsplash_image(keyword):
+    url = "https://api.unsplash.com/search/photos"
+    params = {
+        "query": keyword,
+        "per_page": 1,
+        "orientation": "landscape"
+    }
+    headers = {"Authorization": f"Client-ID {UNSPLASH_ACCESS_KEY}"}
+    response = requests.get(url, params=params, headers=headers)
+    data = response.json()
+    if data["results"]:
+        photo = data["results"][0]
+        image_url = photo["urls"]["regular"]
+        author = photo["user"]["name"]
+        author_url = photo["user"]["links"]["html"]
+        return image_url, author, author_url
+    return None, None, None
 
 def generate_article(topic):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key={GEMINI_API_KEY}"
@@ -49,19 +68,15 @@ def generate_article(topic):
     
     response = requests.post(url, json=payload)
     data = response.json()
-    
-    # デバッグ用
-    print("APIレスポンス:", json.dumps(data, ensure_ascii=False, indent=2))
-    
     return data["candidates"][0]["content"]["parts"][0]["text"]
 
-def save_post(content):
+def save_post(content, topic):
     today = datetime.date.today().strftime("%Y-%m-%d")
     filename = f"content/posts/{today}-post.md"
     
     os.makedirs("content/posts", exist_ok=True)
     
-    # 記事の1行目（# タイトル）からタイトルを抽出
+    # タイトル抽出
     lines = content.strip().split("\n")
     title = ""
     body = content
@@ -71,20 +86,23 @@ def save_post(content):
             body = "\n".join(lines[i+1:]).strip()
             break
     
-    frontmatter = f"""---
-title: "{title}"
-date: {today}
-draft: false
----
-
-"""
-    with open(filename, "w", encoding="utf-8") as f:
-        f.write(frontmatter + body)
+    # Unsplash画像取得（英語キーワードで検索）
+    keyword_map = {
+        "カーナビ": "car navigation",
+        "ドライブレコーダー": "dashcam car",
+        "バッテリー": "car battery",
+        "タイヤ": "car tire",
+        "ETC": "highway toll",
+        "スマホホルダー": "phone mount car",
+        "エアコン": "car air conditioning",
+        "スピーカー": "car audio speaker",
+        "バックカメラ": "car rear camera",
+        "Fire TV": "streaming device car",
+    }
+    keyword = "car"
+    for jp, en in keyword_map.items():
+        if jp in topic:
+            keyword = en
+            break
     
-    print(f"記事を生成しました: {filename}")
-
-if __name__ == "__main__":
-    topic = random.choice(TOPICS)
-    print(f"テーマ: {topic}")
-    content = generate_article(topic)
-    save_post(content)
+    image_url,
