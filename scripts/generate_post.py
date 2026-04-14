@@ -86,7 +86,7 @@ def save_post(content, topic):
             body = "\n".join(lines[i+1:]).strip()
             break
     
-    # Unsplash画像取得（英語キーワードで検索）
+    # キーワードマップ
     keyword_map = {
         "カーナビ": "car navigation",
         "ドライブレコーダー": "dashcam car",
@@ -104,13 +104,28 @@ def save_post(content, topic):
         if jp in topic:
             keyword = en
             break
+
+    # サムネ用画像（メインキーワード）
+    image_url, author, author_url = get_unsplash_image(keyword)
     
-    image_url,author, author_url = get_unsplash_image(keyword)
+    # 本文用画像（別キーワードで取得）
+    keyword2 = keyword + " interior" if keyword != "car" else "car dashboard"
+    image_url2, author2, author_url2 = get_unsplash_image(keyword2)
     
-    # 画像クレジット文
-    image_credit = ""
-    if image_url:
-        image_credit = f'\n\n![{title}]({image_url})\n*Photo by [{author}]({author_url}) on [Unsplash](https://unsplash.com)*\n'
+    # 本文の最初の##の前に画像を挿入
+    image_credit2 = ""
+    if image_url2:
+        image_credit2 = f'\n![{title}]({image_url2})\n*Photo by [{author2}]({author_url2}) on [Unsplash](https://unsplash.com)*\n\n'
+    
+    body_lines = body.split("\n")
+    new_body = []
+    inserted = False
+    for line in body_lines:
+        if line.startswith("## ") and not inserted:
+            new_body.append(image_credit2)
+            inserted = True
+        new_body.append(line)
+    body = "\n".join(new_body)
     
     frontmatter = f"""---
 title: "{title}"
@@ -121,7 +136,7 @@ image: "{image_url}"
 """
     
     with open(filename, "w", encoding="utf-8") as f:
-        f.write(frontmatter + image_credit + "\n" + body)
+        f.write(frontmatter + "\n" + body)
     
     print(f"記事を生成しました: {filename}")
 
