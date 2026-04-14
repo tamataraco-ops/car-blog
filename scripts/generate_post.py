@@ -105,4 +105,27 @@ def save_post(content, topic):
             keyword = en
             break
     
-    image_url,
+    image_url,author, author_url = get_unsplash_image(keyword)
+    
+    # 画像クレジット文
+    image_credit = ""
+    if image_url:
+        image_credit = f'\n\n![{title}]({image_url})\n*Photo by [{author}]({author_url}) on [Unsplash](https://unsplash.com)*\n'
+    
+    frontmatter = f"""---
+title: "{title}"
+date: {today}
+draft: false
+---
+"""
+    
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(frontmatter + image_credit + "\n" + body)
+    
+    print(f"記事を生成しました: {filename}")
+
+if __name__ == "__main__":
+    topic = random.choice(TOPICS)
+    print(f"テーマ: {topic}")
+    content = generate_article(topic)
+    save_post(content, topic)
