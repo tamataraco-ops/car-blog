@@ -61,14 +61,25 @@ def save_post(content):
     
     os.makedirs("content/posts", exist_ok=True)
     
+    # 記事の1行目（# タイトル）からタイトルを抽出
+    lines = content.strip().split("\n")
+    title = ""
+    body = content
+    for i, line in enumerate(lines):
+        if line.startswith("# "):
+            title = line[2:].strip()
+            body = "\n".join(lines[i+1:]).strip()
+            break
+    
     frontmatter = f"""---
+title: "{title}"
 date: {today}
 draft: false
 ---
 
 """
     with open(filename, "w", encoding="utf-8") as f:
-        f.write(frontmatter + content)
+        f.write(frontmatter + body)
     
     print(f"記事を生成しました: {filename}")
 
