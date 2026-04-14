@@ -4,3 +4,4 @@ title = 'クルマいじりブログ'
 theme = 'stack'
 [params]
   mainSections = ["posts"]
+  showRecents = true

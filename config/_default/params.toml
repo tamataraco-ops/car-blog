@@ -1,4 +1,4 @@
-mainSections   = ["post"]
+mainSections   = ["posts"]
 rssFullContent = true
 # Accepted values: "default", "lastmod"
 # default = see https://gohugo.io/quick-reference/glossary/#default-sort-order
