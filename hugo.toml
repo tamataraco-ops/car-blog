@@ -1,4 +1,4 @@
-baseURL = 'https://tamataraco-ops.github.io/car-blog/'
+baseURL = 'https://tamataraco-ops.github.io/car-blog'
 locale = 'ja'
 title = 'クルマいじりブログ'
 theme = 'stack'
