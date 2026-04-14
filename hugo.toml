@@ -1,4 +1,4 @@
-baseURL = 'https://tamataraco-ops.github.io/car-blog/'
+baseURL = 'https://jazzy-alpaca-254c66.netlify.app/'
 locale = 'ja'
 title = 'クルマいじりブログ'
 theme = 'stack'
