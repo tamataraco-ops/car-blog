@@ -1,6 +1,6 @@
 baseURL = 'https://car-blog.tamataraco.workers.dev/'
 locale = 'ja'
-title = 'クルマいじりブログ'
+title = 'クルマいじり'
 theme = 'stack'
 [params]
   mainSections = ["posts"]
