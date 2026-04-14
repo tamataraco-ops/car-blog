@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: リポジトリをチェックアウト
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Pythonセットアップ
         uses: actions/setup-python@v5
