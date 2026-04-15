@@ -1,8 +1,10 @@
 import os
 import datetime
+import zoneinfo
 import requests
 import json
 import random
+import hashlib
 
 GEMINI_API_KEY = os.environ["GEMINI_API_KEY"]
 UNSPLASH_ACCESS_KEY = os.environ["UNSPLASH_ACCESS_KEY"]
@@ -71,8 +73,9 @@ def generate_article(topic):
     return data["candidates"][0]["content"]["parts"][0]["text"]
 
 def save_post(content, topic):
-    today = datetime.date.today().strftime("%Y-%m-%d")
-    filename = f"content/posts/{today}-post.md"
+    today = datetime.datetime.now(zoneinfo.ZoneInfo("Asia/Tokyo")).strftime("%Y-%m-%d")
+    slug = hashlib.md5(topic.encode()).hexdigest()[:8]
+    filename = f"content/posts/{today}-{slug}.md"
     
     os.makedirs("content/posts", exist_ok=True)
     
@@ -105,14 +108,11 @@ def save_post(content, topic):
             keyword = en
             break
 
-    # サムネ用画像（メインキーワード）
     image_url, author, author_url = get_unsplash_image(keyword)
     
-    # 本文用画像（別キーワードで取得）
     keyword2 = keyword + " interior" if keyword != "car" else "car dashboard"
     image_url2, author2, author_url2 = get_unsplash_image(keyword2)
     
-    # 本文の最初の##の前に画像を挿入
     image_credit2 = ""
     if image_url2:
         image_credit2 = f'\n![{title}]({image_url2})\n*Photo by [{author2}]({author_url2}) on [Unsplash](https://unsplash.com)*\n\n'
