@@ -2,6 +2,7 @@ baseURL = 'https://car-blog.tamataraco.workers.dev/'
 locale = 'ja'
 title = 'ダッシュボードの住人'
 theme = 'stack'
+timeZone = "Asia/Tokyo"
 [params]
   mainSections = ["posts"]
   showRecents = true
