@@ -64,12 +64,14 @@ SortBy         = "default"
 
 [[widgets.homepage]]
     type = "archives"
+    limit = 5
 
 [[widgets.homepage]]
     type = "tag-cloud"
 
 [[widgets.page]]
     type = "archives"
+    limit = 5
 
 [[widgets.page]]
     type = "tag-cloud"
