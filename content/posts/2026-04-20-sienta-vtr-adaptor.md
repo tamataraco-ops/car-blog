@@ -1,6 +1,7 @@
 ---
 title: "車内でNetflixを見たい！シエンタ170系にFire TV Stickを繋ぐまでの奮闘記"
-date: 2026-04-18
+date: 2026-04-20
+weight: 1
 description: "車内でNetflixを見たくてオンダッシュDAとFire TV Stick構成で迷った末、VTRアダプター経由でフリップダウンモニターまで映すことに成功した話。セキュリティボルトという想定外の壁も。"
 categories:
   - 車
