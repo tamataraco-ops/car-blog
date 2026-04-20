@@ -62,9 +62,21 @@ SortBy         = "default"
         warning   = "⚠️"
         caution   = "🚨"
 
-[widgets]
-    homepage = ["archives", "tagCloud"]
-    page     = ["archives", "tagCloud"]
+[[widgets.homepage]]
+    type = "archives"
+    limit = 5
+
+[[widgets.homepage]]
+    type = "tagCloud"
+    limit = 10
+
+[[widgets.page]]
+    type = "archives"
+    limit = 5
+
+[[widgets.page]]
+    type = "tagCloud"
+    limit = 10
 
 [opengraph.twitter]
     site = ""
