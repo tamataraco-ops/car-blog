@@ -82,6 +82,8 @@ def generate_article(topic):
 - タイトルは記事の最初に「# タイトル」の形式で書く
 - ブログ名は「ダッシュボードの住人」、筆者名は「管理人」とする
 - 「〇〇」「○○」「◯◯」などのプレースホルダーは絶対に使わない
+- 記事の最後に以下の形式でタグを5つ出力する（本文とは別行で）
+TAGS: タグ1,タグ2,タグ3,タグ4,タグ5
 """
     
     payload = {
@@ -98,7 +100,16 @@ def save_post(content, topic):
     filename = f"content/posts/{today}-{slug}.md"
     
     os.makedirs("content/posts", exist_ok=True)
-    
+
+    # タグ抽出
+    tags = []
+    lines = content.strip().split("\n")
+    for line in lines:
+        if line.startswith("TAGS:"):
+            tags = [t.strip() for t in line.replace("TAGS:", "").split(",")]
+            content = content.replace(line, "").strip()
+            break
+
     # タイトル抽出
     lines = content.strip().split("\n")
     title = ""
@@ -146,12 +157,17 @@ def save_post(content, topic):
             inserted = True
         new_body.append(line)
     body = "\n".join(new_body)
-    
+
+    tags_yaml = "\n".join([f'  - {t}' for t in tags])
     frontmatter = f"""---
 title: "{title}"
 date: {today}
 draft: false
 image: "{image_url}"
+categories:
+  - 車
+tags:
+{tags_yaml}
 ---
 """
     
