@@ -1,4 +1,4 @@
-baseURL = 'https://car-blog.tamataraco.workers.dev/'
+baseURL = 'https://dashboard-life.com/'
 locale = 'ja'
 title = 'ダッシュボードの住人'
 theme = 'stack'
