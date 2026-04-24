@@ -84,6 +84,8 @@ def generate_article(topic):
 - 「〇〇」「○○」「◯◯」などのプレースホルダーは絶対に使わない
 - 記事の最後に以下の形式でタグを5つ出力する（本文とは別行で）
 TAGS: タグ1,タグ2,タグ3,タグ4,タグ5
+- タグの次の行に以下の形式で記事の説明文を100文字以内で出力する
+DESCRIPTION: 説明文
 """
     
     payload = {
@@ -103,12 +105,15 @@ def save_post(content, topic):
 
     # タグ抽出
     tags = []
+    description = ""
     lines = content.strip().split("\n")
     for line in lines:
         if line.startswith("TAGS:"):
             tags = [t.strip() for t in line.replace("TAGS:", "").split(",")]
             content = content.replace(line, "").strip()
-            break
+        if line.startswith("DESCRIPTION:"):
+            description = line.replace("DESCRIPTION:", "").strip()
+            content = content.replace(line, "").strip()
 
     # タイトル抽出
     lines = content.strip().split("\n")
@@ -162,6 +167,7 @@ def save_post(content, topic):
     frontmatter = f"""---
 title: "{title}"
 date: {today}
+description: "{description}"
 draft: false
 image: "{image_url}"
 categories:
