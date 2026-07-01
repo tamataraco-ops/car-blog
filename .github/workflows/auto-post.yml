@@ -1,9 +1,12 @@
 name: 毎日自動投稿
 
-on:
-  schedule:
-    - cron: '0 21 * * *'
-  workflow_dispatch:
+# pause
+on: []
+
+#on:
+#  schedule:
+#    - cron: '0 21 * * *'
+#  workflow_dispatch:
 
 jobs:
   generate-post:
